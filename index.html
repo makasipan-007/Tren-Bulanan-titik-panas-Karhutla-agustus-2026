@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Titik Api Karhutla & Atlas Nusantara (2018 - 2026)</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+            color: #c0392b;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+        }
+        .chart-note {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .source-footer {
+            font-size: 13px;
+            color: #555;
+            margin-top: 12px;
+            text-align: left;
+        }
+        .source-footer a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .source-footer a:hover {
+            text-decoration: underline;
+        }
+        h3 {
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 8px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Dashboard Titik Api & Titik Panas Karhutla Indonesia</h2>
+
+    <!-- Grafik Bulanan SIPONGI -->
+    <div class="card">
+        <h3>Tren Bulanan Titik Api SIPONGI (2018 - 2026)</h3>
+        <p class="chart-note">Klik titik atau arahkan kursor ke dalam grafik untuk melihat tren bulanan</p>
+        <div class="chart-container">
+            <canvas id="monthlyChart"></canvas>
+        </div>
+        <div class="source-footer">
+            Sumber Data: <a href="https://sipongi.menlhk.go.id/" target="_blank" rel="noopener noreferrer">SIPONGI KLHK</a>
+        </div>
+    </div>
+
+    <!-- Grafik Tren Titik Panas Atlas Nusantara -->
+    <div class="card">
+        <h3>Tren Titik Panas Atlas Nusantara (s.d. 26 Agustus 2026)</h3>
+        <p class="chart-note">Rekapitulasi data titik panas berdasarkan pemantauan Atlas Nusantara (1 Januari - 26 Agustus 2026)</p>
+        <div class="chart-container" style="height: 400px;">
+            <canvas id="atlasChart"></canvas>
+        </div>
+        <div class="source-footer">
+            Sumber Data: <a href="https://atlasnusantara.id/" target="_blank" rel="noopener noreferrer">Atlas Nusantara</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Grafik SIPONGI (2018 - 2026)
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+            datasets: [
+                { label: '2018', data: [56, 243, 58, 74, 77, 109, 506, 2936, 2018, 1514, 309, 78], borderColor: '#3498db', backgroundColor: '#3498db', tension: 0.1, fill: false },
+                { label: '2019', data: [43, 309, 577, 142, 148, 110, 525, 3381, 15175, 4131, 1872, 223], borderColor: '#e74c3c', backgroundColor: '#e74c3c', tension: 0.1, fill: false },
+                { label: '2020', data: [92, 153, 281, 47, 62, 57, 105, 236, 425, 354, 193, 46], borderColor: '#2ecc71', backgroundColor: '#2ecc71', tension: 0.1, fill: false },
+                { label: '2021', data: [19, 234, 142, 41, 59, 98, 15, 0, 225, 301, 60, 35], borderColor: '#9b59b6', backgroundColor: '#9b59b6', tension: 0.1, fill: false },
+                { label: '2022', data: [45, 51, 157, 76, 95, 77, 125, 353, 227, 58, 17, 31], borderColor: '#e67e22', backgroundColor: '#e67e22', tension: 0.1, fill: false },
+                { label: '2023', data: [33, 51, 65, 93, 156, 233, 776, 1746, 3256, 3597, 546, 121], borderColor: '#f39c12', backgroundColor: '#f39c12', tension: 0.1, fill: false },
+                { label: '2024', data: [55, 134, 126, 145, 95, 100, 463, 483, 1395, 668, 136, 34], borderColor: '#1abc9c', backgroundColor: '#1abc9c', tension: 0.1, fill: false },
+                { label: '2025', data: [29, 36, 51, 51, 80, 135, 876, 502, 550, 268, 106, 18], borderColor: '#34495e', backgroundColor: '#34495e', tension: 0.1, fill: false },
+                { label: '2026 (Jan-Agu)', data: [110, 157, 396, 145, 119, 166, 758, 4987, null, null, null, null], borderColor: '#e84393', backgroundColor: '#e84393', tension: 0.1, fill: false }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { position: 'top' },
+                tooltip: { mode: 'nearest', intersect: true }
+            },
+            scales: { 
+                y: { beginAtZero: true, title: { display: true, text: 'Jumlah Titik Api' } } 
+            }
+        }
+    });
+
+    // Grafik Atlas Nusantara (2026 s.d. 26 Agustus) - Diubah ke tipe 'line'
+    const atlasCtx = document.getElementById('atlasChart').getContext('2d');
+    new Chart(atlasCtx, {
+        type: 'line',
+        data: {
+            labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', '26 Agustus 2026'],
+            datasets: [{
+                label: 'Jumlah Titik Panas (Atlas Nusantara)',
+                data: [601, 3936, 13372, 27525, 35366, 43834, 57807, 96736, 295699],
+                borderColor: 'rgba(230, 126, 34, 1)',
+                backgroundColor: 'rgba(230, 126, 34, 0.2)',
+                borderWidth: 2,
+                tension: 0.1,
+                fill: true, // Berikan area transparan di bawah garis agar menarik
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { display: false },
+                tooltip: { mode: 'nearest', intersect: true }
+            },
+            scales: { 
+                y: { beginAtZero: true, title: { display: true, text: 'Jumlah Titik Panas' } } 
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
